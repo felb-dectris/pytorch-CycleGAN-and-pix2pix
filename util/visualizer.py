@@ -151,6 +151,9 @@ class Visualizer():
                 if label_html_row != '':
                     label_html += '<tr>%s</tr>' % label_html_row
                 try:
+                    if isinstance(images, list) and len(images) > 0 and images[0].ndim == 3 and images[0].shape[0]>3:
+                        imgs = np.concatenate(images, axis=0)
+                        images = imgs.reshape((imgs.shape[0], 1, imgs.shape[1], imgs.shape[2]))
                     self.vis.images(images, nrow=ncols, win=self.display_id + 1,
                                     padding=2, opts=dict(title=title + ' images'))
                     label_html = '<table>%s</table>' % label_html
@@ -158,6 +161,8 @@ class Visualizer():
                                   opts=dict(title=title + ' labels'))
                 except VisdomExceptionBase:
                     self.create_visdom_connections()
+                except (IndexError, TypeError):
+                    print(f'cannot display images {images}')
 
             else:     # show each image in a separate visdom panel;
                 idx = 1
@@ -191,7 +196,11 @@ class Visualizer():
             self.saved = True
             # save images to the disk
             for label, image in visuals.items():
-                image_numpy = util.tensor2im(image)
+                if image.ndim == 4:
+                    vv = image.reshape((image.shape[1], image.shape[0], image.shape[2], image.shape[3]))
+                else:
+                    vv = image
+                image_numpy = util.tensor2im(vv)
                 img_path = os.path.join(self.img_dir, 'epoch%.3d_%s.png' % (epoch, label))
                 util.save_image(image_numpy, img_path)
 
