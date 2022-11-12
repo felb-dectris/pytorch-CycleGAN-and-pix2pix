@@ -96,7 +96,7 @@ class TrimbitPandasDfDataset(BaseDataset):
                 df = pickle.load(f)
                 self.df = df
             return df
-        except AttributeError:
+        except (AttributeError, ValueError):
             import pickle5
             with open(pickle_fpath, 'rb') as f:
                 print(f'load pickle: {pickle_fpath}')
