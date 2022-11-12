@@ -12,7 +12,7 @@ import os
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
     '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP',
-    '.tif', '.TIF', '.tiff', '.TIFF',
+    '.tif', '.TIF', '.tiff', '.TIFF', 'npy'
 ]
 
 
@@ -20,7 +20,9 @@ def is_image_file(filename):
     return any(filename.endswith(extension) for extension in IMG_EXTENSIONS)
 
 
-def make_dataset(dir, max_dataset_size=float("inf")):
+def make_dataset(dir, max_dataset_size=None):
+    if max_dataset_size is None:
+        max_dataset_size = float("inf")
     images = []
     assert os.path.isdir(dir), '%s is not a valid directory' % dir
 

@@ -2,7 +2,10 @@
 
 It also includes common transformation functions (e.g., get_transform, __scale_width), which can be later used in subclasses.
 """
+import pickle
 import random
+import tempfile
+
 import numpy as np
 import torch.utils.data as data
 from PIL import Image
@@ -95,7 +98,12 @@ def get_transform(opt, params=None, grayscale=False, method=transforms.Interpola
             transform_list.append(transforms.Lambda(lambda img: __crop(img, params['crop_pos'], opt.crop_size)))
 
     if opt.preprocess == 'none':
-        transform_list.append(transforms.Lambda(lambda img: __make_power_2(img, base=4, method=method)))
+        try:
+            lambda_transformation = transforms.Lambda(lambda img: __make_power_2(img, base=4, method=method))
+            pickle.dumps(lambda_transformation)
+            transform_list.append(lambda_transformation)
+        except Exception as e:
+            print(f'Error: {e}')
 
     if not opt.no_flip:
         if params is None:
