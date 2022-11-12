@@ -84,13 +84,25 @@ class TrimbitPandasDfDataset(BaseDataset):
                 max_dataset_size = float("inf")
             pickle_fpath = os.path.join(dir, pickle_filename)
             self.pickle_path = pickle_fpath
+            df = self.get_pickle(pickle_fpath)
+            images = df
+
+            return images.iloc[:min(max_dataset_size, len(images))]
+
+    def get_pickle(self, pickle_fpath):
+        try:
             with open(pickle_fpath, 'rb') as f:
                 print(f'load pickle: {pickle_fpath}')
                 df = pickle.load(f)
                 self.df = df
-            images = df
-
-            return images.iloc[:min(max_dataset_size, len(images))]
+            return df
+        except AttributeError:
+            import pickle5
+            with open(pickle_fpath, 'rb') as f:
+                print(f'load pickle: {pickle_fpath}')
+                df = pickle5.load(f)
+                self.df = df
+            return df
 
     def __getitem__(self, index):
         """Return a data point and its metadata information.
