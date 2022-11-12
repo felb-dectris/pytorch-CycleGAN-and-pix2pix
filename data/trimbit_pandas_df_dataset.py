@@ -62,7 +62,11 @@ class TrimbitPandasDfDataset(BaseDataset):
         self.data_dir = os.path.join(opt.dataroot, opt.phase)  # get the image directory
         # get the image paths of your dataset;
         # You can call sorted(make_dataset(self.root, opt.max_dataset_size)) to get all the image paths under the directory self.root
-        self.keys = sorted(self.make_dataset(self.data_dir, max_dataset_size=opt.max_dataset_size,))
+        try:
+            self.keys = sorted(self.make_dataset(self.data_dir, max_dataset_size=opt.max_dataset_size,))
+        except:
+            self.data_dir = os.path.join(opt.dataroot)  # get the image directory
+            self.keys = sorted(self.make_dataset(self.data_dir, max_dataset_size=opt.max_dataset_size, ))
         # define the default transform function. You can use <base_dataset.get_transform>; You can also define your custom transform function
         self.transform = get_transform(opt, grayscale=True)
         self.prediction_item = opt.prediction_item
