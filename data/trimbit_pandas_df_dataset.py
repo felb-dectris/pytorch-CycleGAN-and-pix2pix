@@ -59,6 +59,7 @@ class TrimbitPandasDfDataset(BaseDataset):
         """
         # save the option and dataset root
         BaseDataset.__init__(self, opt)
+        self.df = None
         self.data_dir = os.path.join(opt.dataroot, opt.phase)  # get the image directory
         # get the image paths of your dataset;
         # You can call sorted(make_dataset(self.root, opt.max_dataset_size)) to get all the image paths under the directory self.root
@@ -71,6 +72,7 @@ class TrimbitPandasDfDataset(BaseDataset):
         self.transform = get_transform(opt, grayscale=True)
         self.prediction_item = opt.prediction_item
         self.opt = opt
+
 
 
     def make_dataset(self,dir, pickle_filename=None,max_dataset_size=None, energies=None):
@@ -131,7 +133,8 @@ class TrimbitPandasDfDataset(BaseDataset):
             vrfp = int(vrfp)
             if not vrfp in self.energies:
                 continue
-            img = Image.fromarray(series[key][2].reshape(256,1024))
+            np_array = series[key][2].reshape(256,1024)
+            img = Image.fromarray(np_array)
             images[i] = img
         B_img = images.pop(self.prediction_item)
 

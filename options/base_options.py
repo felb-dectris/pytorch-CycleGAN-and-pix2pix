@@ -66,9 +66,7 @@ class BaseOptions():
         These options are defined in the <modify_commandline_options> function
         in model and dataset classes.
         """
-        if not self.initialized:  # check if it has been initialized
-            parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-            parser = self.initialize(parser)
+        parser = self.prepare_parser()
 
         # get the basic options
         opt, _ = parser.parse_known_args()
@@ -87,6 +85,12 @@ class BaseOptions():
         # save and return the parser
         self.parser = parser
         return parser.parse_args()
+
+    def prepare_parser(self):
+        if not self.initialized:  # check if it has been initialized
+            parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            parser = self.initialize(parser)
+        return parser
 
     def print_options(self, opt):
         """Print and save options

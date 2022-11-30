@@ -38,13 +38,25 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256, use_w
     ims, txts, links = [], [], []
     ims_dict = {}
     for label, im_data in visuals.items():
-        im = util.tensor2im(im_data)
-        image_name = '%s_%s.png' % (name, label)
-        save_path = os.path.join(image_dir, image_name)
-        util.save_image(im, save_path, aspect_ratio=aspect_ratio)
-        ims.append(image_name)
-        txts.append(label)
-        links.append(image_name)
+        if  len(im_data.shape)==4 and im_data.shape[1] == 6:
+            for n in range( im_data.shape[1]):
+                s = im_data[0][2].shape
+                img = im_data[0][2].reshape([1,1,s[0],s[1]])
+                im = util.tensor2im(img)
+                image_name = '%s_%s_%s.png' % (name, label,n)
+                save_path = os.path.join(image_dir, image_name)
+                util.save_image(im, save_path, aspect_ratio=aspect_ratio)
+                ims.append(image_name)
+                txts.append(label)
+                links.append(image_name)
+        else:
+            im = util.tensor2im(im_data)
+            image_name = '%s_%s.png' % (name, label)
+            save_path = os.path.join(image_dir, image_name)
+            util.save_image(im, save_path, aspect_ratio=aspect_ratio)
+            ims.append(image_name)
+            txts.append(label)
+            links.append(image_name)
         if use_wandb:
             ims_dict[label] = wandb.Image(im)
     webpage.add_images(ims, txts, links, width=width)
