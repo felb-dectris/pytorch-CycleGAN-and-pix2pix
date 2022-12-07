@@ -2,7 +2,7 @@ import pytest as pytest
 
 from data import create_dataset
 from data.trimbit_dataset import TrimbitDataset
-from data.trimbit_dataset_single import TrimbitDatasetSingle
+from data.trimbit_single_df_dataset import TrimbitSingleDfDataset
 from options.train_options import TrainOptions
 
 
@@ -36,10 +36,10 @@ def test_create_dataset(opt):
 
 @pytest.fixture
 def trimbit_dataset(opt):
-    return TrimbitDatasetSingle(opt)
+    return TrimbitSingleDfDataset(opt)
 
 def test_init(trimbit_dataset):
-    assert isinstance(trimbit_dataset, TrimbitDatasetSingle)
+    assert isinstance(trimbit_dataset, TrimbitSingleDfDataset)
 
 def test_get_item(trimbit_dataset):
     for i in range(4):
