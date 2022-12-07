@@ -7,6 +7,10 @@ from data.trimbit_pandas_df_dataset import TrimbitPandasDfDataset
 class TrimbitDatasetSingle(TrimbitPandasDfDataset):
     n_chips = 4
 
+    def __init__(self, opt):
+        super(TrimbitDatasetSingle, self).__init__(opt)
+        print(f'Total lenght {len(self)}')
+
     def __getitem__(self, index):
         orig_index = index // self.n_chips
         chip_id = index % self.n_chips

@@ -97,14 +97,15 @@ class TrimbitPandasDfDataset(BaseDataset):
                 print(f'load pickle: {pickle_fpath}')
                 df = pickle.load(f)
                 self.df = df
-            return df
+
         except (AttributeError, ValueError):
             import pickle5
             with open(pickle_fpath, 'rb') as f:
                 print(f'load pickle: {pickle_fpath}')
                 df = pickle5.load(f)
                 self.df = df
-            return df
+        print(f'Dataframe Entries {len(df)}')
+        return df
 
     def __getitem__(self, index):
         """Return a data point and its metadata information.
