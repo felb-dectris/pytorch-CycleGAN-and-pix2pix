@@ -10,6 +10,7 @@ from options.train_options import TrainOptions
 def opt():
     opt = TrainOptions()
     opt.dataset_mode = 'trimbit'
+    opt.dataframe_name = 'df_1.3.5.pickle'
     opt.dataroot = '/Users/felix.bachmair/sdvlp/CAS_BDAI_Project/data'
     opt.phase = 'train'
     opt.max_dataset_size =  float("inf")

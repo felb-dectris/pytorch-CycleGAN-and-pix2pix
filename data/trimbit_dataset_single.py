@@ -1,9 +1,10 @@
 import torch
 
 from data.trimbit_dataset import TrimbitDataset
+from data.trimbit_pandas_df_dataset import TrimbitPandasDfDataset
 
 
-class TrimbitDatasetSingle(TrimbitDataset):
+class TrimbitDatasetSingle(TrimbitPandasDfDataset):
     n_chips = 4
 
     def __getitem__(self, index):
