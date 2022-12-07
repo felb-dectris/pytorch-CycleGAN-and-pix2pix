@@ -20,4 +20,5 @@ class TrimbitDatasetSingle(TrimbitPandasDfDataset):
 
     def __len__(self):
         """Return the total number of images."""
-        return len(self.image_paths)*self.n_chips
+        n = super(TrimbitDatasetSingle,self).__len__()
+        return n*self.n_chips

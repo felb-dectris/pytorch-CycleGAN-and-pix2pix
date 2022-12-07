@@ -45,3 +45,7 @@ def test_get_item(trimbit_dataset):
     for i in range(4):
         data = trimbit_dataset[i]
         print(data['A'].shape)
+
+
+def test_get_length(trimbit_dataset):
+    assert len(trimbit_dataset) == 474 * 4

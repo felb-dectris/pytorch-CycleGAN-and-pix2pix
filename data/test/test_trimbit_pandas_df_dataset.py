@@ -48,3 +48,6 @@ def test_init(trimbit_dataset):
 
 def test_get_item(trimbit_dataset):
     trimbit_dataset[0]
+
+def test_get_length(trimbit_dataset):
+    assert len(trimbit_dataset)==400
