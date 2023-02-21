@@ -45,8 +45,11 @@ except ImportError:
 
 
 def calculate_difference(visuals, original):
-    fake_img = visuals['fake']
-    simple_estimate = original['A'][0][0].reshape([1, 1, 256, 1024])
+    try:
+        fake_img = visuals['fake']
+    except KeyError:
+        print(f'cannot find fake in {visuals.keys()}')
+    simple_estimate = original['A'][0][0].reshape([1, 1, 256, 256])
     real_img = original['B']
     fake = tensor2im(fake_img)
     real = tensor2im(real_img)
